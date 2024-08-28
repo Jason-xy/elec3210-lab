@@ -62,27 +62,33 @@ example of `evo_traj`:
 ### Prediction
 
 State:
+
 $$
 \mu=\left[\begin{array}{llllll}x & y & \theta & m_{1} & \ldots & m_{n}\end{array}\right]^{T} \quad \Sigma=\left[\begin{array}{ll}\Sigma_{x x} & \Sigma_{x m} \\ \Sigma_{m x} & \Sigma_{m m}\end{array}\right]
 $$
 
 Robot control:
+
 $$
-u_{t}=\left[\begin{array}{l}v_{x} \\ \omega_{z}\end{array}\right], n=\left[\begin{array}{l}\sigma_{v} \\ \sigma_{\omega}\end{array}\right], R_{n}=\operatorname{cov}(n)
+u_{t}=\left[\begin{array}{l}v_{x} \\ \omega_{z}\end{array}\right], n=\left[\begin{array}{l}\sigma_{v} \\ \sigma_{\omega}\end{array}\right], R_{n}=cov(n)
 $$
 
 Motion function:
-$$
-\bar{\mu}_{t}=\mu_{t-1}+B u_{t} \\
-\bar{\Sigma}_{t}=G_{t} \Sigma_{t-1} G_{t}^{T}+F_{t} R_{n} F_{t}^{T}
-$$
 
-$B=F_{t}=\left[\begin{array}{cc}\Delta t \cos \left(\theta_{t-1}\right) & 0 \\ \Delta t \sin \left(\theta_{t-1}\right) & 0 \\ 0 & \Delta t \\ 0 & 0 \\ \vdots & \vdots \\ 0 & 0\end{array}\right] G_{t}=\left[\begin{array}{cccccc}1 & 0 & -v_{x} \Delta t \sin \left(\theta_{t-1}\right) & 0 & \cdots & 0 \\ 0 & 1 & v_{x} \Delta t \cos \left(\theta_{t-1}\right) & \vdots & \ddots & \vdots \\ 0 & 0 & 1 & 0 & \cdots & 0 \\ 0 & \cdots & 0 & 1 & \cdots & 0 \\ \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\ 0 & \cdots & 0 & 0 & \cdots & 1\end{array}\right]$
+```math
+\bar{\mu}_{t}=\mu_{t-1}+B u_{t}
+```
+```math
+\bar{\Sigma}_{t}=G_{t} \Sigma_{t-1} G_{t}^{T}+F_{t} R_{n} F_{t}^{T}
+```
+```math
+B=F_{t}=\left[\begin{array}{cc}\Delta t \cos \left(\theta_{t-1}\right) & 0 \\ \Delta t \sin \left(\theta_{t-1}\right) & 0 \\ 0 & \Delta t \\ 0 & 0 \\ \vdots & \vdots \\ 0 & 0\end{array}\right] G_{t}=\left[\begin{array}{cccccc}1 & 0 & -v_{x} \Delta t \sin \left(\theta_{t-1}\right) & 0 & \cdots & 0 \\ 0 & 1 & v_{x} \Delta t \cos \left(\theta_{t-1}\right) & \vdots & \ddots & \vdots \\ 0 & 0 & 1 & 0 & \cdots & 0 \\ 0 & \cdots & 0 & 1 & \cdots & 0 \\ \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\ 0 & \cdots & 0 & 0 & \cdots & 1\end{array}\right]
+```
 
 ### Update
 
 ![](https://cdn.mathpix.com/cropped/2024_08_28_2dd7c9990b60a6c71abdg-3.jpg?height=620&width=1312&top_left_y=1409&top_left_x=406)
 
-$$
+```math
 H_{t}=\frac{1}{q}\left[\begin{array}{ccccc}-\sqrt{q} \delta_{x} & -\sqrt{q} \delta_{y} & 0 & \sqrt{q} \delta_{x} & \sqrt{q} \delta_{y} \\ \delta_{y} & -\delta_{x} & -q & -\delta_{y} & \delta_{x}\end{array}\right]\left[\begin{array}{ccccccc}1 & 0 & 0 & 0 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 & 0 & 0 & 0 \\ 0 & 0 & 1 & 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 0 & 0 & 1 & 0 \\ 2^{t} y_{j-2} & & & 2 n-2\end{array}\right] \quad \begin{aligned} & K_{t}=\bar{\Sigma}_{t} H_{t}^{T}\left(H_{t} \bar{\Sigma}_{t} H_{t}^{T}+Q\right)^{-1} \\ & \mu_{t}=\bar{\mu}_{t}+K_{t}\left(z_{t}-\hat{z}_{t}\right) \\ & \Sigma_{t}=\left(I-K_{t} H_{t}\right) \bar{\Sigma}_{t}\end{aligned}
-$$
+```
