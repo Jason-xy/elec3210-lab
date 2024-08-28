@@ -1,0 +1,9 @@
+<launch>
+    <param name="use_sim_time" value="true" />
+
+	<node pkg="ekf_slam" type="ekf_node" name="ekf_node" output="screen"/>
+
+    <node pkg="rosbag" type="play" name="rosbag" args="$(find ekf_slam)/../dataset/turtlebot.bag --clock -s 0 -r 1" output="log"/>
+
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find ekf_slam)/launch/default.rviz" />
+</launch>

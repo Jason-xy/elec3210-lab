@@ -1,0 +1,3 @@
+icp:
+  max_iterations: 100
+  max_distance: 0.5
