@@ -63,15 +63,15 @@ example of `evo_traj`:
 
 State:
 
-$$
+```math
 \mu=\left[\begin{array}{llllll}x & y & \theta & m_{1} & \ldots & m_{n}\end{array}\right]^{T} \quad \Sigma=\left[\begin{array}{ll}\Sigma_{x x} & \Sigma_{x m} \\ \Sigma_{m x} & \Sigma_{m m}\end{array}\right]
-$$
+```
 
 Robot control:
 
-$$
+```math
 u_{t}=\left[\begin{array}{l}v_{x} \\ \omega_{z}\end{array}\right], n=\left[\begin{array}{l}\sigma_{v} \\ \sigma_{\omega}\end{array}\right], R_{n}=cov(n)
-$$
+```
 
 Motion function:
 
@@ -90,5 +90,20 @@ B=F_{t}=\left[\begin{array}{cc}\Delta t \cos \left(\theta_{t-1}\right) & 0 \\ \D
 ![](https://cdn.mathpix.com/cropped/2024_08_28_2dd7c9990b60a6c71abdg-3.jpg?height=620&width=1312&top_left_y=1409&top_left_x=406)
 
 ```math
-H_{t}=\frac{1}{q}\left[\begin{array}{ccccc}-\sqrt{q} \delta_{x} & -\sqrt{q} \delta_{y} & 0 & \sqrt{q} \delta_{x} & \sqrt{q} \delta_{y} \\ \delta_{y} & -\delta_{x} & -q & -\delta_{y} & \delta_{x}\end{array}\right]\left[\begin{array}{ccccccc}1 & 0 & 0 & 0 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 & 0 & 0 & 0 \\ 0 & 0 & 1 & 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 & 1 & 0 & 0 \\ 0 & 0 & 0 & 0 & 0 & 1 & 0 \\ 2^{t} y_{j-2} & & & 2 n-2\end{array}\right] \quad \begin{aligned} & K_{t}=\bar{\Sigma}_{t} H_{t}^{T}\left(H_{t} \bar{\Sigma}_{t} H_{t}^{T}+Q\right)^{-1} \\ & \mu_{t}=\bar{\mu}_{t}+K_{t}\left(z_{t}-\hat{z}_{t}\right) \\ & \Sigma_{t}=\left(I-K_{t} H_{t}\right) \bar{\Sigma}_{t}\end{aligned}
+\begin{equation}
+H_t=\frac{1}{q}\left[\begin{array}{ccccc}
+-\sqrt{q} \delta_x & -\sqrt{q} \delta_y & 0 & \sqrt{q} \delta_x & \sqrt{q} \delta_y \\
+\delta_y & -\delta_x & -q & -\delta_y & \delta_x
+\end{array}\right]\left[\begin{array}{ccccccc}
+1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+0 & 0 & 0 & \underbrace{0}_{2 \cdot j-2} & 0 & 1 & \underbrace{0}_{2 n-2 j}
+\end{array}\right] \quad \begin{aligned}
+& K_t=\bar{\Sigma}_t H_t^T\left(H_t \bar{\Sigma}_t H_t^T+Q\right)^{-1} \\
+& \mu_t=\bar{\mu}_t+K_t\left(z_t-\hat{z}_t\right) \\
+& \Sigma_t=\left(I-K_t H_t\right) \bar{\Sigma}_t
+\end{aligned}
+\end{equation}
 ```
