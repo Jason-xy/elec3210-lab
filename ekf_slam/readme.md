@@ -24,7 +24,7 @@ roslaunch ekf_slam ekf_slam.launch
 
 ### Evaluation
 
-You can evaluate the performance of your implementation by comparing the estimated odometry with the ground truth. Recommended to use [evo](!https://github.com/MichaelGrupp/evo) to evaluate the performance.
+You can evaluate the performance of your implementation by comparing the estimated odometry with the ground truth. Recommended to use [evo](https://github.com/MichaelGrupp/evo) to evaluate the performance.
 
 1. Record the rosbag data with estimated odometry and ground truth odometry.
 
