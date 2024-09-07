@@ -13,6 +13,14 @@
 - MacOS (Apple Silicon)
 - Ubuntu
 
+## Attention
+
+If you clone this repository on **Windows**, please make sure the line endings are set to `LF` instead of `CRLF`.
+
+```bash
+git config --global core.autocrlf input
+```
+
 ## Prerequisites
 
 - [Docker](https://docs.docker.com/get-docker/)
