@@ -6,6 +6,8 @@ In this project, you will implement an ICP registration algorithm to estimate th
 
 ### toy_example
 
+![](https://wpcos-1300629776.cos.ap-chengdu.myqcloud.com/wpcos-1300629776/Galleryicp1.png)
+
 Run the toy example to test the correctness of your implementation.
 
 ```bash
@@ -20,6 +22,8 @@ You can see the registration result in the pop-up window.
 ![](https://wpcos-1300629776.cos.ap-chengdu.myqcloud.com/wpcos-1300629776/Gallery20240828171521.png)
 
 ### odom_node
+
+![](https://wpcos-1300629776.cos.ap-chengdu.myqcloud.com/wpcos-1300629776/Galleryicp2.png)
 
 This node is used to estimate the odometry of the robot based on the ICP algorithm. The input is the point cloud data from the LiDAR sensor, and the output is the odometry of the robot. After implementing the ICP algorithm, you can run the following command to test your implementation.
 

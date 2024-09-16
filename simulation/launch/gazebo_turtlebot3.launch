@@ -1,0 +1,23 @@
+<launch>
+    <arg name="model" default="waffle"/>
+    <arg name="x_pos" default="-2.0"/>
+    <arg name="y_pos" default="-0.5"/>
+    <arg name="z_pos" default="0.0"/>
+
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find 3d_slam_simulation)/world/wall_cylinder.world"/>
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="true"/>
+        <arg name="headless" value="false"/>
+        <arg name="debug" value="false"/>
+    </include>
+
+<!--     rosrun teleop_twist_keyboard teleop_twist_keyboard.py -->
+
+    <!--publish tf transformation-->
+    <node pkg="tf" type="static_transform_publisher" name="world_to_map" args="0 0 0 0 0 0 map velodyne 100" />
+    <!-- Run Rviz (Display) -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find 3d_slam_simulation)/rviz/rviz.rviz"/>
+
+</launch>
