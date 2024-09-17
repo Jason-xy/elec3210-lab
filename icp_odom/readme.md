@@ -69,6 +69,16 @@ example of `evo_traj`:
 6. If you have no experience of C++ coding, start this project as early as possible. Programming proficiency is not determined by the courses you’ve taken, but rather by ample practice and persistent debugging.
 7.  Submit your code and documents on Canvas before the deadline. Scores will be deducted for late submission.
 
+### Resubmission Policy
+Late submissions are accepted up to 7 days after the due date, with 3% (of the total grade of the item) penalty per day.
+
+
 ## References
 
 [1] https://registry.hkust.edu.hk/resource-library/academic-integrity
+
+## Third-party Libraries references
+
+[Eigen](https://eigen.tuxfamily.org/dox/group__QuickRefPage.html): A C++ template library for linear algebra: matrices, vectors, numerical solvers, and related algorithms.
+
+[PCL](https://pcl.readthedocs.io/projects/tutorials/en/master/): The Point Cloud Library (PCL) is a standalone, large scale, open project for 2D/3D image and point cloud processing.
