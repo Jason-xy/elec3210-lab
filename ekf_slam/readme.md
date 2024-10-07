@@ -2,7 +2,9 @@
 
 ## Introduction
 
-In Project 2, you’ll be required to implement the extended Kalman filter for a 2D landmark-based SLAM system. You’ll receive a ROS package, ekf_slam, which contains skeleton code for the filter. You’ll need to follow the instructions detailed in the last page, step by step
+In Project 2, you’ll be required to implement the extended Kalman filter for a 2D landmark-based SLAM system. You’ll receive a ROS package, ekf_slam, which contains skeleton code for the filter. You’ll need to follow the instructions detailed in the last page, step by step to fill in the missing parts of the code in `src/ekf_slam.cpp`.
+
+This project is harder than the previous one, so please start as early as possible. If you encounter any problems, please ask for help on Canvas Discussion section or directly contact the TA.
 
 ### Instruction
 
