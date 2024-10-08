@@ -6,9 +6,20 @@
 #include <sensor_msgs/PointCloud2.h>
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
+#include <cmath>
+
 
 using namespace std;
 using namespace Eigen;
+
+// In case of w = 0, we need to avoid division by zero
+static inline double safeDivide(double numerator, double denominator) {
+    const double epsilon = 1e-6;
+    if (std::abs(denominator) < epsilon) {
+        denominator = (denominator < 0) ? -epsilon : epsilon;
+    }
+    return numerator / denominator;
+}
 
 EKFSLAM::~EKFSLAM() {}
 
@@ -133,8 +144,10 @@ Eigen::MatrixXd EKFSLAM::jacobB(const Eigen::VectorXd& state,
                                 Eigen::Vector2d ut, double dt) {
   int num_state = state.rows();
   Eigen::MatrixXd B = Eigen::MatrixXd::Zero(num_state, 2);
-  B(0, 0) = dt * cos(state(2));
-  B(1, 0) = dt * sin(state(2));
+  double v = ut(0);
+  double w = ut(1);
+  B(0, 0) = -safeDivide(sin(state(2)) - sin(state(2) + w * dt), w);
+  B(1, 0) = safeDivide(cos(state(2)) - cos(state(2) + w * dt), w);
   B(2, 1) = dt;
   return B;
 }
@@ -145,8 +158,7 @@ void EKFSLAM::predictState(Eigen::VectorXd& state, Eigen::MatrixXd& cov,
   state = state + jacobB(state, ut, dt) * ut;  // update state
   Eigen::MatrixXd Gt = jacobGt(state, ut, dt);
   Eigen::MatrixXd Ft = jacobFt(state, ut, dt);
-  //	cov = Gt * cov * Gt.transpose() + Ft * R * Ft.transpose(); // update
-  // covariance
+  cov = Gt * cov * Gt.transpose() + Ft * R * Ft.transpose(); // update
 }
 
 Eigen::Vector2d EKFSLAM::transform(const Eigen::Vector2d& p,
@@ -188,15 +200,14 @@ void EKFSLAM::updateMeasurement() {
   Eigen::VectorXi indices = Eigen::VectorXi::Ones(num_obs) *
                             -1;  // indices of landmarks in the state vector
   for (int i = 0; i < num_obs; ++i) {
-    Eigen::Vector2d pt_transformed =
-        transform(cylinderPoints.row(i),
-                  xwb);  // 2D pole center in the world frame
-                         // Implement the data association here, i.e., find the
-                         // corresponding landmark for each observation
-                         /**
-                          * TODO: data association
-                          *
-                          * **/
+    Eigen::Vector2d pt_transformed = transform(cylinderPoints.row(i), xwb);
+    // 2D pole center in the world frame
+    // Implement the data association here, i.e., find the
+    // corresponding landmark for each observation
+    /**
+    * TODO: data association
+    *
+    * **/
     if (indices(i) == -1) {
       indices(i) = ++globalId;
       addNewLandmark(pt_transformed, Q);

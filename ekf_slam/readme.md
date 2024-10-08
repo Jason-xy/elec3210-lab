@@ -47,13 +47,14 @@ example of `evo_traj`:
 ![](https://wpcos-1300629776.cos.ap-chengdu.myqcloud.com/wpcos-1300629776/Gallery20240828190841.png)
 
 ## Scoring Rules
+
 1. Please title your submission "PROJECT2-YOUR-NAMES.zip". Your submission should include a maximum 2-page report and all necessary files to run your code, a video in 1 minute, rosbag with the estimated odometry and ground truth odometry.
 2. The report should contain at least a visualization of your final point cloud map and trajectory.
 3. If your code is similar to others’ or any open-source code on the internet, the score will be 0 unless the sources are properly referenced in your report. Refer to $^1$ for details.
 4. Excessive white space, overly large images, or redundant descriptions in report will not contribute to a higher score. Simple but efficient code is preferred.
 5. If any problem, please google first. If unsolved, create a discussion on Canvas.
 6. If you have no experience of C++ coding, start this project as early as possible. Programming proficiency is not determined by the courses you’ve taken, but rather by ample practice and persistent debugging.
-7.  Submit your code and documents on Canvas before the deadline. Scores will be deducted for late submission.
+7. Submit your code and documents on Canvas before the deadline. Scores will be deducted for late submission.
 
 ## References
 
@@ -65,9 +66,9 @@ example of `evo_traj`:
 
 State:
 
-```math
+$$
 \mu=\left[\begin{array}{llllll}x & y & \theta & m_{1} & \ldots & m_{n}\end{array}\right]^{T} \quad \Sigma=\left[\begin{array}{ll}\Sigma_{x x} & \Sigma_{x m} \\ \Sigma_{m x} & \Sigma_{m m}\end{array}\right]
-```
+$$
 
 Robot control:
 
@@ -80,11 +81,13 @@ Motion function:
 ```math
 \bar{\mu}_{t}=\mu_{t-1}+B u_{t}
 ```
+
 ```math
 \bar{\Sigma}_{t}=G_{t} \Sigma_{t-1} G_{t}^{T}+F_{t} R_{n} F_{t}^{T}
 ```
+
 ```math
-B=F_{t}=\left[\begin{array}{cc}\Delta t \cos \left(\theta_{t-1}\right) & 0 \\ \Delta t \sin \left(\theta_{t-1}\right) & 0 \\ 0 & \Delta t \\ 0 & 0 \\ \vdots & \vdots \\ 0 & 0\end{array}\right] G_{t}=\left[\begin{array}{cccccc}1 & 0 & -v_{x} \Delta t \sin \left(\theta_{t-1}\right) & 0 & \cdots & 0 \\ 0 & 1 & v_{x} \Delta t \cos \left(\theta_{t-1}\right) & \vdots & \ddots & \vdots \\ 0 & 0 & 1 & 0 & \cdots & 0 \\ 0 & \cdots & 0 & 1 & \cdots & 0 \\ \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\ 0 & \cdots & 0 & 0 & \cdots & 1\end{array}\right]
+B=F_{t}=\left[\begin{array}{cc}-\frac{1}{\omega_t} \sin \theta+\frac{1}{\omega_t} \sin \left(\theta+\omega_t \Delta t\right) & 0 \\ \frac{1}{\omega_t} \cos \theta-\frac{1}{\omega_t} \cos \left(\theta+\omega_t \Delta t\right) & 0 \\ 0 & \Delta t \\ 0 & 0 \\ \vdots & \vdots \\ 0 & 0\end{array}\right] \\G_{t}=\left[\begin{array}{cccccc}1 & 0 & -\frac{v_t}{\omega_t} \cos \theta+\frac{v_t}{\omega_t} \cos \left(\theta+\omega_t \Delta t\right) & 0 & \cdots & 0 \\ 0 & 1 & -\frac{v_t}{\omega_t} \sin \theta+\frac{v_t}{\omega_t} \sin \left(\theta+\omega_t \Delta t\right) & \vdots & \ddots & \vdots \\ 0 & 0 & 1 & 0 & \cdots & 0 \\ 0 & \cdots & 0 & 1 & \cdots & 0 \\ \vdots & \ddots & \vdots & \vdots & \ddots & \vdots \\ 0 & \cdots & 0 & 0 & \cdots & 1\end{array}\right]
 ```
 
 ### Update
@@ -92,7 +95,6 @@ B=F_{t}=\left[\begin{array}{cc}\Delta t \cos \left(\theta_{t-1}\right) & 0 \\ \D
 ![](https://cdn.mathpix.com/cropped/2024_08_28_2dd7c9990b60a6c71abdg-3.jpg?height=620&width=1312&top_left_y=1409&top_left_x=406)
 
 ```math
-\begin{equation}
 H_t=\frac{1}{q}\left[\begin{array}{ccccc}
 -\sqrt{q} \delta_x & -\sqrt{q} \delta_y & 0 & \sqrt{q} \delta_x & \sqrt{q} \delta_y \\
 \delta_y & -\delta_x & -q & -\delta_y & \delta_x
@@ -103,9 +105,12 @@ H_t=\frac{1}{q}\left[\begin{array}{ccccc}
 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
 0 & 0 & 0 & \underbrace{0}_{2 \cdot j-2} & 0 & 1 & \underbrace{0}_{2 n-2 j}
 \end{array}\right] \quad \begin{aligned}
-& K_t=\bar{\Sigma}_t H_t^T\left(H_t \bar{\Sigma}_t H_t^T+Q\right)^{-1} \\
-& \mu_t=\bar{\mu}_t+K_t\left(z_t-\hat{z}_t\right) \\
-& \Sigma_t=\left(I-K_t H_t\right) \bar{\Sigma}_t
 \end{aligned}
-\end{equation}
+```
+
+
+```math
+K_t=\bar{\Sigma}_t H_t^T\left(H_t \bar{\Sigma}_t H_t^T+Q\right)^{-1} \\
+\mu_t=\bar{\mu}_t+K_t\left(z_t-\hat{z}_t\right) \\
+\Sigma_t=\left(I-K_t H_t\right) \bar{\Sigma}_t
 ```
