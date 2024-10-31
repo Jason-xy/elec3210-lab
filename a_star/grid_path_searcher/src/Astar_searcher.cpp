@@ -213,6 +213,7 @@ void AstarPathFinder::AstarGraphSearch(Vector3d start_pt, Vector3d end_pt) {
    * **************************************************************/
   // TODO: Make start point as visited
 
+
   vector<GridNodePtr> neighborPtrSets;
   vector<double> edgeCostSets;
   Eigen::Vector3i current_idx;  // record the current index

@@ -36,6 +36,7 @@ Log
 
 data/*
 
+.DS_Store
 .idea
 __pycache__
 
